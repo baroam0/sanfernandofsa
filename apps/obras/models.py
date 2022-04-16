@@ -7,7 +7,6 @@ class Obra(models.Model):
     def __str__(self):
         return self.descripcion
 
-    
     class Meta:
         verbose_name_plural = "Obras"
 

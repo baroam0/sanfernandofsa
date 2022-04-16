@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class ObrasConfig(AppConfig):
-    name = 'obras'
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'apps.obras'
