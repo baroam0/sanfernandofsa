@@ -1,6 +1,6 @@
 
 .vscode/settings.json
-/coma/settings.py
+/sanfernandofsa/settings.py
 db.sqlite3
 *.pyc 
 dbdev.sqlite3
