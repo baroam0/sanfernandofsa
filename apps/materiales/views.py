@@ -9,7 +9,7 @@ from .models import Material
 from .forms import MaterialForm
 
 
-def listadomaterial(request):
+def listado(request):
     resultados = None
     if "txtBuscar" in request.GET:
         parametro = request.GET.get("txtBuscar")
@@ -24,7 +24,7 @@ def listadomaterial(request):
     )
 
 
-def nuevomaterial(request):
+def nuevo(request):
     if request.POST:
         form = MaterialForm(request.POST)
         if form.is_valid():
@@ -38,14 +38,14 @@ def nuevomaterial(request):
         return render(request, 'materiales/material_edit.html', {"form": form})
 
 
-def editarmaterial(request, pk):
+def editar(request, pk):
     consulta = Material.objects.get(pk=pk)
     if request.POST:
         form = MaterialForm(request.POST, instance=consulta)
         if form.is_valid():
             form.save()
             messages.success(request, "SE HA ACTUALIZADO EL MATERIAL")
-            return redirect('/listadomaterial')
+            return redirect('/materiales/listado')
         else:
             return render(request, 'materiales/material_edit.html', {"form": form})
     else:
