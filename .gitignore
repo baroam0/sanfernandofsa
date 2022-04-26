@@ -1,7 +1,7 @@
 
 .vscode/settings.json
 /sanfernandofsa/settings.py
-sanfernandofsa/settings.py
+/sanfernandofsa/sanfernandofsa/settings.py
 db.sqlite3
 *.pyc 
 dbdev.sqlite3

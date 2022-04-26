@@ -51,6 +51,8 @@
                 <thead>
                     <tr>
                         <th>Descripcion</th>
+                        <th>Unidad</th>
+                        <th>Cantidad</th>
                         <th>Editar</th>
                     </tr>
                 </thead>
@@ -58,6 +60,8 @@
                     {% for resultado in resultados %}
                         <tr>
                             <td>{{resultado.descripcion.upper }}</td>
+                            <td>{{resultado.unidad.upper }}</td>
+                            <td>{{resultado.cantidad }}</td>
                             <td>
                                 <a href="/editarmaterial/{{resultado.pk}} ">Editar</a></p>
                             </td>
