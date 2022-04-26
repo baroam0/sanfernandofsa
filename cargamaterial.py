@@ -11,6 +11,6 @@ print("Grabando...")
 
 for material in materiales:
     if material != "":
-        grabar = Material(descripcion=str(material))
+        grabar = Material(descripcion=str(material), cantidad=0, unidad=1)
         grabar.save()
 
