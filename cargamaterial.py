@@ -11,7 +11,6 @@ print("Grabando...")
 
 unidad = Unidad.objects.get(pk=1)
 
-
 for material in materiales:
     if material != "":
         grabar = Material(descripcion=str(material), cantidad=0, unidad=unidad)
