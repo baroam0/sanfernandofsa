@@ -8,6 +8,8 @@ from .models import Material
 class MaterialForm(forms.ModelForm):
     descripcion = forms.CharField(
         label="Descripcion", required=True)
+    
+    unidad = forms.ModelChoiceField
 
     def __init__(self, *args, **kwargs):
         super(MaterialForm, self).__init__(*args, **kwargs)
@@ -18,5 +20,5 @@ class MaterialForm(forms.ModelForm):
 
     class Meta:
         model = Material
-        fields = ['descripcion']
+        fields = ['descripcion', 'unidad']
     
