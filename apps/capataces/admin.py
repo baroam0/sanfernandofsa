@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import Contratista
+from .models import Capataz
 
-admin.site.register(Contratista)
+admin.site.register(Capataz)
 
 # Register your models here.

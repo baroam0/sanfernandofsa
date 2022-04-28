@@ -25,8 +25,15 @@
             <form class="pure-form" method="POST">{% csrf_token %}
                 <fieldset class="pure-group">
                     
-                    <label for="aligned-name">Descripcion</label>
-                    {{form.descripcion}}
+                    <label for="aligned-name">Apellido</label>
+                    {{form.apellido}}
+                    <span class="pure-form-message-inline">Este dato es requerido.</span>
+
+                    <br>
+                    <br>
+
+                    <label for="aligned-name">Nombre</label>
+                    {{form.nombre}}
                     <span class="pure-form-message-inline">Este dato es requerido.</span>
                     
                     <br>

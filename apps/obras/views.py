@@ -8,7 +8,6 @@ from .models import Obra
 
 def listadoobra(request):
     resultados = None
-
     if "txtBuscar" in request.GET:
         parametro = request.GET.get("txtBuscar")
         resultados = Obra.objects.filter(descripcion__icontains=parametro)
@@ -28,7 +27,7 @@ def nuevaobra(request):
         if form.is_valid():
             form.save()
             messages.success(request, "SE HA GRABADO LA OBRA")
-            return redirect('/listadoobra')
+            return redirect('/obras/listado')
         else:
             return render(request, 'obras/obra_edit.html', {"form": form})
     else:
@@ -43,7 +42,7 @@ def editarobra(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "SE HA ACTUALIZADO LA OBRA")
-            return redirect('/listadoobra')
+            return redirect('/obra/listado')
         else:
             return render(request, 'obras/obra_edit.html', {"form": form})
     else:

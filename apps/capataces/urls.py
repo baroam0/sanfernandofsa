@@ -16,10 +16,10 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import listadomaterial, nuevomaterial, editarmaterial
+from .views import listadocapataces, nuevocapataz, editarcapataz
 
 urlpatterns = [
-    path('listado/', listadomaterial, name='listado-material'),
-    path('nuevo/', nuevomaterial, name='nuevo-material'),
-    path('editar/<int:pk>', editarmaterial, name='editar-material'),
+    path('listado/', listadocapataces, name='listado-capataz'),
+    path('nuevo/', nuevocapataz, name='nuevo-capataz'),
+    path('editar/<int:pk>', editarcapataz, name='editar-capataz'),
 ]
