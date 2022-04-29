@@ -5,13 +5,12 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import DetalleOrden, Orden, Unidad
-from apps.contratistas.models import Contratista
+from .models import DetalleOrden, Orden
+from apps.capataces.models import Capataz
 from apps.materiales.models import Material
 from apps.obras.models import Obra
 
 from apps.libs.funcionfecha import revertirfecha
-from apps.depositos.helper import agregamaterial
 
 
 def listadoorden(request):
@@ -29,7 +28,9 @@ def listadoorden(request):
             else:
                 resultados = Orden.objects.filter(
                     Q(obra__descripcion__icontains=parametro) |
-                    Q(contratista__descripcion__icontains=parametro)).order_by("-pk")
+                    Q(capataz__nombre__icontains=parametro) |
+                    Q(capataz__apellido__icontains=parametro)
+                    ).order_by("-pk")
         else:
             resultados = Orden.objects.all().order_by("-pk")
 
@@ -43,17 +44,15 @@ def listadoorden(request):
 
 
 def nuevaorden(request):
-    contratistas = Contratista.objects.all()
-    unidades = Unidad.objects.all().order_by("descripcion")
+    capataces = Capataz.objects.all()
     obras = Obra.objects.all().order_by("descripcion")
 
     return render(
         request,
         "ordenes/orden_nueva.html",
         {
-            "contratistas": contratistas,
-            "obras": obras,
-            "unidades": unidades
+            "capataces": capataces,
+            "obras": obras
         }
     )
 

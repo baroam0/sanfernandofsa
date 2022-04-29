@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.capataces',
     'apps.materiales',
+    'apps.ordenes',
     'apps.obras'
 ]
 

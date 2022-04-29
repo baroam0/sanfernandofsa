@@ -56,11 +56,11 @@
             <form class="pure-form">
                 <fieldset class="pure-group">
                     <input type="text" id="txtFecha" class="pure-input-1" placeholder="Fecha" />
-
+                    
                     <select id="selectContratista">
-                        {% for contratista in contratistas %}
-                            <option value={{contratista.pk}}>
-                                {{contratista.descripcion.upper}}
+                        {% for capataz in capataces %}
+                            <option value={{capataz.pk}}>
+                                {{capataz.apellido.upper}}, {{capataz.nombre.upper}}
                             </option>
                         {% endfor%}
                     </select>
@@ -73,8 +73,6 @@
                         {% endfor%}
                     </select>
                     
-                    <input type="text" id="txtEncargado" class="pure-input-1" placeholder="Encargado" />
-                    
                 </fieldset>
 
 
@@ -85,14 +83,6 @@
                     <button type="button" id="btnnuevomaterial" class="pure-button">Nuevo material </button>
 
                     <input type="text" id="txtCantidad" class="pure-input-1-2" placeholder="Cantidad" />
-
-                    <select id="selectUnidad">
-                        {% for unidad in unidades %}
-                            <option value={{unidad.pk}}>
-                                {{unidad.descripcion}}
-                            </option>
-                        {% endfor%}
-                    </select>
 
                     <button type="button" class="pure-button" onclick="AgregarFilaTabla()" >Agregar</button>                    
 
@@ -156,7 +146,6 @@
     </div>
 
     {% block customjs %}
-
 
         <script>
 
