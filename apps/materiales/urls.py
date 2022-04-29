@@ -16,10 +16,13 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import listadomaterial, nuevomaterial, editarmaterial
+from .views import (
+        listadomaterial, nuevomaterial, editarmaterial, ajaxmaterial,
+    )
 
 urlpatterns = [
     path('listado/', listadomaterial, name='listado-material'),
     path('nuevo/', nuevomaterial, name='nuevo-material'),
     path('editar/<int:pk>', editarmaterial, name='editar-material'),
+    path('ajax/listado/', ajaxmaterial, name='ajax-listado'),
 ]

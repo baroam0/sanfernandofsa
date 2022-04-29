@@ -54,15 +54,15 @@
                 <fieldset class="pure-group">
                     <input type="text" id="txtFecha" class="pure-input-1" placeholder="Fecha" />
 
-                    <select id="selectContratista">
-                        {% for contratista in contratistas %}
-                            {% if contratista.pk == orden.contratista.pk %}
+                    <select id="selectCapataz">
+                        {% for capataz in capataces %}
+                            {% if capataz.pk == orden.capataz.pk %}
                                 <option value={{contratista.pk}} selected>
-                                    {{contratista.descripcion.upper}}
+                                    {{capataz.apellido.upper}}, {{capataz.nombre.upper}}
                                 </option>
                             {% else %}
-                                <option value={{contratista.pk}}>
-                                    {{contratista.descripcion.upper}}
+                                <option value={{capataz.pk}}>
+                                    {{capataz.apellido.upper}}, {{capataz.nombre.upper}}
                                 </option>
                             {% endif %}
                         {% endfor%}
@@ -81,8 +81,6 @@
                             {% endif %}
                         {% endfor%}
                     </select>
-                    
-                    <input type="text" id="txtEncargado" class="pure-input-1" placeholder="Encargado" value="{{orden.encargado}}" />
                     
                 </fieldset>
 
@@ -122,7 +120,6 @@
                                 <th>Material</th>
                                 <th>Cantidad</th>
                                 <th>Unidad</th>
-                                <th>Faltante</th>
                                 <th>Quitar</th>
                             </tr>
                         </thead>
@@ -131,14 +128,7 @@
                                 <tr id='{{detalle.material.pk}}'>
                                     <td>{{ detalle.material.descripcion.upper }}</td>
                                     <td>{{ detalle.cantidad }}</td>
-                                    <td id='{{detalle.unidad.pk}}'>{{detalle.unidad.descripcion}}</td>
-                                    <td>
-                                        {% if detalle.faltante == True %}
-                                            <input type='checkbox' value=1 id="chk_{{detalle.material.pk}}" checked>
-                                        {% else %}
-                                            <input type='checkbox' value=0 id="chk_{{detalle.material.pk}}" >
-                                        {% endif %}
-                                    </td>
+                                    <td>{{ detalle.material.unidad}}</td>
                                     <td><button type='button' onclick='QuitarFila({{detalle.material.pk}})'>Quitar</button></td>
                                 </tr>
                             {% endfor %}

@@ -57,7 +57,7 @@
                 <fieldset class="pure-group">
                     <input type="text" id="txtFecha" class="pure-input-1" placeholder="Fecha" />
                     
-                    <select id="selectContratista">
+                    <select id="selectCapataz">
                         {% for capataz in capataces %}
                             <option value={{capataz.pk}}>
                                 {{capataz.apellido.upper}}, {{capataz.nombre.upper}}
@@ -97,7 +97,6 @@
                             <tr>
                                 <th>Material</th>
                                 <th>Cantidad</th>
-                                <th>Unidad</th>
                                 <th>Quitar</th>
                             </tr>
                         </thead>
@@ -147,6 +146,7 @@
 
     {% block customjs %}
 
+
         <script>
 
             $(document).ready(function () {
@@ -155,7 +155,6 @@
                 var btn = document.getElementById("btnnuevomaterial");
                 var modal = document.getElementById("myModal");
                 var span = document.getElementsByClassName("close")[0];
-                
 
                 btn.onclick = function() {
                     modal.style.display = "block";
@@ -181,7 +180,7 @@
                 },
                 minimumInputLength: 3,
                 ajax: {
-                    url: '/ajaxmaterial/',
+                    url: '/materiales/ajax/listado/',
                     processResults: function (data) {
                         return {
                             results: $.map(data, function (item) {
@@ -195,16 +194,16 @@
                 }
             });
 
-
             function getSelectedText(elementId) {
                 var elt = document.getElementById(elementId);
+                console.log(elt.options);
                 if (elt.selectedIndex == -1)
                     return null;
                 return elt.options[elt.selectedIndex].text;
             }
 
             function IrListadoMaterial() {
-                window.location.replace("/listadoorden");
+                window.location.replace("/materiales/listado");
             }
 
             function AgregarFilaTabla(){
@@ -216,13 +215,9 @@
                     cantidad = 1
                 }
 
-                var unidad = getSelectedText("selectUnidad")
-                var id_unidad = $("#selectUnidad").val();
-
                 contenido = "<tr id='" + material_id +  "'>";
                 contenido = contenido + "<td>"+ material +"</td>";
                 contenido = contenido + "<td>" + cantidad + "</td>";
-                contenido = contenido + "<td id='" + id_unidad + "'>" + unidad + "</td>";
                 contenido = contenido + "<td><button type='button' onclick='QuitarFila(" + material_id + ")'>Quitar</button></td>"
                 contenido = contenido + "</tr>";
                 $("#tblMateriales tbody").append(contenido);
@@ -258,12 +253,10 @@
 
             function GrabarOrden(){
                 var fecha = $("#txtFecha").val();
-                var contratista = $("#selectContratista").val();
-                var encargado = $("#txtEncargado").val();
+                var capataz = $("#selectCapataz").val();
                 var obra = $("#selectObras").val()
 
                 var arraymaterial = [];
-                var arrayunidad = [];
                 var arraycantidad = [];
 
                 var tabla = document.getElementById('tblMateriales');
@@ -281,30 +274,24 @@
                             arraycantidad.push(cantidad);
                             arraymaterial.push(idmaterial);
                         }
-                        if(y==2){
-                            var idunidad=cell.id;
-                            arrayunidad.push(idunidad);
-                        }
                     }
 
                 }
 
                 $.ajax({
                     type: "POST",
-                    url: "/ajaxgrabarorden/",
+                    url: "/ordenes/ajax/nuevo/",
                     data: {
                         "fecha": fecha,
-                        "contratista": contratista,
-                        "encargado": encargado,
+                        "capataz": capataz,
                         "obra": obra,
                         "arraymaterial": arraymaterial,
-                        "arrayunidad": arrayunidad,
                         "arraycantidad": arraycantidad,
                     },
                     success: function (response) {
                         if(response.status==200){
                             alert("Se ha grabado la orden");
-                            window.location.replace("/listadoorden")
+                            window.location.replace("/materiales/listado")
                         }else{
                             alert("Ha ocurrido un error");
                         }
@@ -321,14 +308,9 @@
                     var cellLength = row.cells.length;
                     for(var y=0; y<cellLength; y+=1){
                         var cell = row.cells[y];
-
                         if(y==1){
                             var cantidad=cell.innerHTML;
                             var idmaterial = row.id;
-                        }
-                        if(y==2){
-                            var idunidad=cell.id;
-                            console.log(cell);
                         }
                     }
                 }

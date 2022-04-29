@@ -16,10 +16,11 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import listadoorden, nuevaorden, editarorden
+from .views import listadoorden, nuevaorden, editarorden, ajaxgrabarorden
 
 urlpatterns = [
     path('listado/', listadoorden, name='listado-orden'),
     path('nuevo/', nuevaorden, name='nueva-orden'),
     path('editar/<int:pk>', editarorden, name='editar-orden'),
+    path('ajax/nuevo/', ajaxgrabarorden,  name='ajax-nueva-orden'),
 ]

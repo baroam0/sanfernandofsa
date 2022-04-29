@@ -11,6 +11,7 @@ from apps.materiales.models import Material
 from apps.obras.models import Obra
 
 from apps.libs.funcionfecha import revertirfecha
+from apps.libs.helper import modificacantidadmaterial
 
 
 def listadoorden(request):
@@ -61,36 +62,31 @@ def nuevaorden(request):
 def ajaxgrabarorden(request):
     fecha = request.POST["fecha"]
     fecha = revertirfecha(fecha)
-    contratista= Contratista.objects.get(pk=int(request.POST["contratista"]))
-    encargado = request.POST["encargado"]
+    capataz = Capataz.objects.get(pk=int(request.POST["capataz"]))
     obra = Obra.objects.get(pk=int(request.POST["obra"]))
 
     arraymaterial = request.POST.getlist('arraymaterial[]')
-    arrayunidad = request.POST.getlist('arrayunidad[]')
     arraycantidad = request.POST.getlist('arraycantidad[]')
 
     orden=Orden(
         fecha=fecha,
-        contratista=contratista,
-        encargado=encargado,
+        capataz=capataz,
         obra=obra
     )
 
     orden.save()
     orden = Orden.objects.latest("pk")
 
-    for (material, unidad, cantidad) in zip(arraymaterial, arrayunidad, arraycantidad):
+    for (material, cantidad) in zip(arraymaterial, arraycantidad):
         material = Material.objects.get(pk=int(material))
-        unidad = Unidad.objects.get(pk=int(unidad))
 
         detalleorden = DetalleOrden(
             orden=orden,
             material=material,
-            cantidad=cantidad,
-            unidad=unidad
+            cantidad=cantidad
         )
 
-        agregamaterial(material.pk, cantidad)
+        modificacantidadmaterial(material.pk, cantidad)
 
         detalleorden.save()
 
@@ -102,8 +98,7 @@ def ajaxgrabarorden(request):
 
 
 def editarorden(request, pk):
-    contratistas = Contratista.objects.all()
-    unidades = Unidad.objects.all().order_by("descripcion")
+    capataces = Capataz.objects.all()
     obras = Obra.objects.all().order_by("descripcion")
 
     orden = Orden.objects.get(pk=pk)
@@ -117,8 +112,7 @@ def editarorden(request, pk):
         {
             "orden": orden,
             "detallesorden": detallesorden,
-            "contratistas": contratistas,
-            "unidades": unidades,
+            "capataces": capataces,
             "obras": obras
         }
     )
