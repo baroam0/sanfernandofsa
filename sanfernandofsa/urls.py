@@ -18,7 +18,10 @@ from django.contrib import admin
 from django.urls import include, path
 
 from .views import home
+<<<<<<< HEAD
 
+=======
+>>>>>>> 011c1136b6cac864ccb0deff78b40c50555b83bf
 
 urlpatterns = [
     path('admin/', admin.site.urls),

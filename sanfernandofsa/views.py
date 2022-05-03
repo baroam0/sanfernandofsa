@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -39,3 +40,10 @@ def salir(request):
 
 
 # Create your views here.
+=======
+from django.shortcuts import render
+
+
+def home(request):
+    return render(request, 'base.html')
+>>>>>>> 011c1136b6cac864ccb0deff78b40c50555b83bf
