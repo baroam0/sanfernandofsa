@@ -59,7 +59,7 @@
                         <tr>
                             <td>{{resultado.descripcion.upper }}</td>
                             <td>
-                                <a href="/editarobra/{{resultado.pk}} ">Editar</a></p>
+                                <a href="/obras/editar/{{resultado.pk}} ">Editar</a></p>
                             </td>
                         </tr>
                     {% endfor %}
@@ -79,7 +79,7 @@
         });
 
         function IrNuevoMaterial() {
-            window.location.replace("/nuevaobra");
+            window.location.replace("/obras/nuevo");
         }
 
     </script>

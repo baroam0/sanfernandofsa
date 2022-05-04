@@ -60,7 +60,7 @@
                     {% for resultado in resultados %}
                         <tr>
                             <td>{{resultado.descripcion.upper }}</td>
-                            <td>{{resultado.unidad.upper }}</td>
+                            <td>{{resultado.unidad.descripcion }}</td>
                             <td>{{resultado.cantidad }}</td>
                             <td>
                                 <a href="/materiales/editar/{{resultado.pk}} ">Editar</a></p>
@@ -83,7 +83,7 @@
         });
 
         function IrNuevoMaterial() {
-            window.location.replace("/nuevomaterial");
+            window.location.replace("/materiales/nuevo");
         }
 
     </script>

@@ -54,15 +54,15 @@
                 <fieldset class="pure-group">
                     <input type="text" id="txtFecha" class="pure-input-1" placeholder="Fecha" />
 
-                    <select id="selectContratista">
-                        {% for contratista in contratistas %}
-                            {% if contratista.pk == orden.contratista.pk %}
-                                <option value={{contratista.pk}} selected>
-                                    {{contratista.descripcion.upper}}
+                    <select id="selectCapataz">
+                        {% for capataz in capataces %}
+                            {% if capataz.pk == orden.capataz.pk %}
+                                <option value={{capataz.pk}} selected>
+                                    {{capataz.apellido.upper}}, {{capataz.nombre.upper}}
                                 </option>
                             {% else %}
-                                <option value={{contratista.pk}}>
-                                    {{contratista.descripcion.upper}}
+                                <option value={{capataz.pk}}>
+                                    {{capataz.apellido.upper}}, {{capataz.nombre.upper}}
                                 </option>
                             {% endif %}
                         {% endfor%}
@@ -81,8 +81,6 @@
                             {% endif %}
                         {% endfor%}
                     </select>
-                    
-                    <input type="text" id="txtEncargado" class="pure-input-1" placeholder="Encargado" value="{{orden.encargado}}" />
                     
                 </fieldset>
 
@@ -122,7 +120,6 @@
                                 <th>Material</th>
                                 <th>Cantidad</th>
                                 <th>Unidad</th>
-                                <th>Faltante</th>
                                 <th>Quitar</th>
                             </tr>
                         </thead>
@@ -131,14 +128,7 @@
                                 <tr id='{{detalle.material.pk}}'>
                                     <td>{{ detalle.material.descripcion.upper }}</td>
                                     <td>{{ detalle.cantidad }}</td>
-                                    <td id='{{detalle.unidad.pk}}'>{{detalle.unidad.descripcion}}</td>
-                                    <td>
-                                        {% if detalle.faltante == True %}
-                                            <input type='checkbox' value=1 id="chk_{{detalle.material.pk}}" checked>
-                                        {% else %}
-                                            <input type='checkbox' value=0 id="chk_{{detalle.material.pk}}" >
-                                        {% endif %}
-                                    </td>
+                                    <td>{{ detalle.material.unidad}}</td>
                                     <td><button type='button' onclick='QuitarFila({{detalle.material.pk}})'>Quitar</button></td>
                                 </tr>
                             {% endfor %}
@@ -167,10 +157,13 @@
                   <form class="pure-form">
                         <fieldset class="pure-group">
                             <label for="aligned-name">Descripcion</label>
-                            <input type="text" name="descripcion" class="pure-input-1" id="txtdescripcionmaterial">
+                            <input type="text" name="descripcion" class="pure-input-1" id="txtdescripcionmaterial" required>
                             <span class="pure-form-message-inline">Este dato es requerido.</span>
                             <br>
                             <br>
+
+                            <input type="number" name="cantidad" class="pure-input-1" id="txtcantidadmaterial" required>
+                            <span class="pure-form-message-inline">Este dato es requerido.</span>
         
                             <div class="pure-controls">
                                 <button type="button" class="pure-button pure-button-primary" onclick="GrabarMaterial()">Aceptar</button>
@@ -218,7 +211,7 @@
                 },
                 minimumInputLength: 3,
                 ajax: {
-                    url: '/ajaxmaterial/',
+                    url: '/materiales/ajax/listado/',
                     processResults: function (data) {
                         return {
                             results: $.map(data, function (item) {
@@ -260,7 +253,6 @@
                 contenido = contenido + "<td>"+ material +"</td>";
                 contenido = contenido + "<td>" + cantidad + "</td>";
                 contenido = contenido + "<td id='" + id_unidad + "'>" + unidad + "</td>";
-                contenido = contenido + "<td> <input type='checkbox' value=0 id='" + "chk_" + material_id + "'>";
 
                 contenido = contenido + "<td><button type='button' onclick='QuitarFila(" + material_id + ")'>Quitar</button></td>"
                 contenido = contenido + "</tr>";
@@ -296,8 +288,7 @@
 
             function GrabarOrden(){
                 var fecha = $("#txtFecha").val();
-                var contratista = $("#selectContratista").val();
-                var encargado = $("#txtEncargado").val();
+                var capataz = $("#selectCapataz").val();
                 var obra = $("#selectObras").val()
 
                 var arraymaterial = [];
@@ -326,20 +317,7 @@
                             var idunidad=cell.id;
                             arrayunidad.push(idunidad);
                         }
-                        if(y==3){
-                            var idcheckfaltante = "chk_" + row.id;
-                            var elemento = document.getElementById(idcheckfaltante);
-
-                            var valorFaltante = "";
-
-                            if(elemento.checked==true){
-                                valorFaltante = 1
-                                arrayfaltante.push(valorFaltante);
-                            }else{
-                                valorFaltante = 0
-                                arrayfaltante.push(valorFaltante);
-                            }
-                        }
+                        
 
                     }
 
@@ -347,11 +325,10 @@
                 
                 $.ajax({
                     type: "POST",
-                    url: "/ajaxgrabareditarorden/{{orden.pk}}",
+                    url: "/ordenes/ajax/editar/{{orden.pk}}",
                     data: {
                         "fecha": fecha,
-                        "contratista": contratista,
-                        "encargado": encargado,
+                        "capataz": capataz,
                         "obra": obra,
                         "arraymaterial": arraymaterial,
                         "arrayunidad": arrayunidad,

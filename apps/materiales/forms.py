@@ -2,14 +2,22 @@
 
 from django import forms
 
-from .models import Material
+from .models import Material, Unidad
 
 
 class MaterialForm(forms.ModelForm):
     descripcion = forms.CharField(
-        label="Descripcion", required=True)
-    
-    unidad = forms.ModelChoiceField
+        label="Descripcion",
+        required=True
+    )
+
+    unidad = forms.ModelChoiceField(
+        queryset=Unidad.objects.all(),
+        label="Unidad",required=True
+    )
+
+    cantidad = forms.DecimalField(
+        label="Cantidad", required=True)
 
     def __init__(self, *args, **kwargs):
         super(MaterialForm, self).__init__(*args, **kwargs)
@@ -20,5 +28,4 @@ class MaterialForm(forms.ModelForm):
 
     class Meta:
         model = Material
-        fields = ['descripcion', 'unidad']
-    
+        fields = ['descripcion', 'cantidad', 'unidad']

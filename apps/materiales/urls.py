@@ -13,25 +13,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-<<<<<<< HEAD
+
 from django.contrib import admin
 from django.urls import path
 
-from .views import listado, nuevo, editar
+from .views import listado, nuevo, editar, ajaxmaterial
+
 
 urlpatterns = [
-    path('listado/', listado, name='listado'),
-    path('nuevo/', listado, name='nuevo'),
-    path('editar/<int:pk>', editar, name='editar')
-=======
-
-from django.urls import path
-
-from .views import listadomaterial, nuevomaterial, editarmaterial
-
-urlpatterns = [
-    path('listado/', listadomaterial, name='listado'),
-    path('nuevo/', nuevomaterial, name='nuevo'),
-    path('editar/<int:pk>', editarmaterial, name='editar'),
->>>>>>> 011c1136b6cac864ccb0deff78b40c50555b83bf
+    path('listado/', listado, name='listado-material'),
+    path('nuevo/', nuevo, name='nuevo-material'),
+    path('editar/<int:pk>', editar, name='editar-material'),
+    path('ajax/listado/', ajaxmaterial, name='ajax-listado')
 ]

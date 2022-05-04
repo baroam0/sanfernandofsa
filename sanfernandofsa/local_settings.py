@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.materiales'
+    'apps.capataces',
+    'apps.materiales',
+    'apps.ordenes',
     'apps.obras'
 ]
 
@@ -56,7 +58,7 @@ ROOT_URLCONF = 'sanfernandofsa.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

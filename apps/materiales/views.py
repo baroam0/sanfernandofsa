@@ -30,7 +30,7 @@ def nuevo(request):
         if form.is_valid():
             form.save()
             messages.success(request, "SE HA GRABADO EL MATERIAL")
-            return redirect('/listadomaterial')
+            return redirect('/materiales/listado')
         else:
             return render(request, 'materiales/material_edit.html', {"form": form})
     else:

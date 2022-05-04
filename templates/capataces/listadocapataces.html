@@ -7,7 +7,7 @@
         <div class="pure-u-1-5"></div>
         <div class="pure-u-3-5">
             <h3>
-                Busqueda de Contratista
+                Busqueda de Capataz
             </h3>
 
 
@@ -29,7 +29,7 @@
 
                     &nbsp;&nbsp;&nbsp;
 
-                    <button type="button" class="pure-button pure-button" onclick="IrNuevoContratista()">Nueva Contratista</button>
+                    <button type="button" class="pure-button pure-button" onclick="IrNuevoContratista()">Nueva Capataz</button>
 
                     &nbsp;&nbsp;&nbsp;
 
@@ -50,16 +50,18 @@
             <table class="pure-table pure-table-striped ">
                 <thead>
                     <tr>
-                        <th>Descripcion</th>
+                        <th>Apellido</th>
+                        <th>Nombre</th>
                         <th>Editar</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for resultado in resultados %}
                         <tr>
-                            <td>{{resultado.descripcion.upper }}</td>
+                            <td>{{resultado.apellido.upper }}</td>
+                            <td>{{resultado.nombre.upper }}</td>
                             <td>
-                                <a href="/editarcontratista/{{resultado.pk}} ">Editar</a></p>
+                                <a href="/capataces/editar/{{resultado.pk}} ">Editar</a></p>
                             </td>
                         </tr>
                     {% endfor %}
@@ -79,7 +81,7 @@
         });
 
         function IrNuevoContratista() {
-            window.location.replace("/nuevocontratista");
+            window.location.replace("/capataces/nuevo");
         }
 
     </script>

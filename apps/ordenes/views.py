@@ -5,13 +5,16 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 
-from .models import DetalleOrden, Orden, Unidad
-from apps.contratistas.models import Contratista
-from apps.materiales.models import Material
+from .models import DetalleOrden, Orden
+from apps.capataces.models import Capataz
+
+from apps.materiales.forms import MaterialForm
+from apps.materiales.models import Material, Unidad
+
 from apps.obras.models import Obra
 
 from apps.libs.funcionfecha import revertirfecha
-from apps.depositos.helper import agregamaterial
+from apps.libs.helper import modificacantidadmaterial
 
 
 def listadoorden(request):
@@ -29,7 +32,9 @@ def listadoorden(request):
             else:
                 resultados = Orden.objects.filter(
                     Q(obra__descripcion__icontains=parametro) |
-                    Q(contratista__descripcion__icontains=parametro)).order_by("-pk")
+                    Q(capataz__nombre__icontains=parametro) |
+                    Q(capataz__apellido__icontains=parametro)
+                    ).order_by("-pk")
         else:
             resultados = Orden.objects.all().order_by("-pk")
 
@@ -43,17 +48,15 @@ def listadoorden(request):
 
 
 def nuevaorden(request):
-    contratistas = Contratista.objects.all()
-    unidades = Unidad.objects.all().order_by("descripcion")
+    capataces = Capataz.objects.all()
     obras = Obra.objects.all().order_by("descripcion")
 
     return render(
         request,
         "ordenes/orden_nueva.html",
         {
-            "contratistas": contratistas,
-            "obras": obras,
-            "unidades": unidades
+            "capataces": capataces,
+            "obras": obras
         }
     )
 
@@ -62,36 +65,31 @@ def nuevaorden(request):
 def ajaxgrabarorden(request):
     fecha = request.POST["fecha"]
     fecha = revertirfecha(fecha)
-    contratista= Contratista.objects.get(pk=int(request.POST["contratista"]))
-    encargado = request.POST["encargado"]
+    capataz = Capataz.objects.get(pk=int(request.POST["capataz"]))
     obra = Obra.objects.get(pk=int(request.POST["obra"]))
 
     arraymaterial = request.POST.getlist('arraymaterial[]')
-    arrayunidad = request.POST.getlist('arrayunidad[]')
     arraycantidad = request.POST.getlist('arraycantidad[]')
 
     orden=Orden(
         fecha=fecha,
-        contratista=contratista,
-        encargado=encargado,
+        capataz=capataz,
         obra=obra
     )
 
     orden.save()
     orden = Orden.objects.latest("pk")
 
-    for (material, unidad, cantidad) in zip(arraymaterial, arrayunidad, arraycantidad):
+    for (material, cantidad) in zip(arraymaterial, arraycantidad):
         material = Material.objects.get(pk=int(material))
-        unidad = Unidad.objects.get(pk=int(unidad))
 
         detalleorden = DetalleOrden(
             orden=orden,
             material=material,
-            cantidad=cantidad,
-            unidad=unidad
+            cantidad=cantidad
         )
 
-        agregamaterial(material.pk, cantidad)
+        modificacantidadmaterial(material.pk, cantidad)
 
         detalleorden.save()
 
@@ -103,9 +101,9 @@ def ajaxgrabarorden(request):
 
 
 def editarorden(request, pk):
-    contratistas = Contratista.objects.all()
-    unidades = Unidad.objects.all().order_by("descripcion")
+    capataces = Capataz.objects.all()
     obras = Obra.objects.all().order_by("descripcion")
+    unidades = Unidad.objects.all()
 
     orden = Orden.objects.get(pk=pk)
     detallesorden = DetalleOrden.objects.filter(
@@ -118,9 +116,9 @@ def editarorden(request, pk):
         {
             "orden": orden,
             "detallesorden": detallesorden,
-            "contratistas": contratistas,
-            "unidades": unidades,
-            "obras": obras
+            "capataces": capataces,
+            "obras": obras,
+            "unidades": unidades
         }
     )
 
@@ -132,28 +130,25 @@ def ajaxgrabareditarorden(request,pk):
 
     fecha = request.POST["fecha"]
     fecha = revertirfecha(fecha)
-    contratista= Contratista.objects.get(pk=int(request.POST["contratista"]))
-    encargado = request.POST["encargado"]
+    capataz = Capataz.objects.get(pk=int(request.POST["capataz"]))
     obra = Obra.objects.get(pk=int(request.POST["obra"]))
 
     arraymaterial = request.POST.getlist('arraymaterial[]')
     arrayunidad = request.POST.getlist('arrayunidad[]')
     arraycantidad = request.POST.getlist('arraycantidad[]')
-    arrayfaltante = request.POST.getlist('arrayfaltante[]')
 
     orden = Orden.objects.get(pk=pk)
 
     orden = Orden.objects.filter(pk=pk).update(
         fecha=fecha,
-        contratista=contratista,
-        encargado=encargado,
+        capataz=capataz,
         obra=obra
     )
     obra.save()
 
     orden = Orden.objects.get(pk=pk)
 
-    for (material, unidad, cantidad, faltante) in zip(arraymaterial, arrayunidad, arraycantidad, arrayfaltante):
+    for (material, unidad, cantidad) in zip(arraymaterial, arrayunidad, arraycantidad):
         material = Material.objects.get(pk=int(material))
         unidad = Unidad.objects.get(pk=int(unidad))
 
@@ -161,8 +156,6 @@ def ajaxgrabareditarorden(request,pk):
             orden=orden,
             material=material,
             cantidad=cantidad,
-            unidad=unidad,
-            faltante=faltante
         )
         print(detalleorden)
 
