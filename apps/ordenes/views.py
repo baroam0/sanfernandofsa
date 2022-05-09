@@ -136,6 +136,9 @@ def ajaxgrabareditarorden(request,pk):
     arraymaterial = request.POST.getlist('arraymaterial[]')
     arrayunidad = request.POST.getlist('arrayunidad[]')
     arraycantidad = request.POST.getlist('arraycantidad[]')
+    
+    print("***********************************")
+    print(arrayunidad)
 
     orden = Orden.objects.get(pk=pk)
 
