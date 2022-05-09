@@ -14,7 +14,9 @@ from apps.materiales.models import Material, Unidad
 from apps.obras.models import Obra
 
 from apps.libs.funcionfecha import revertirfecha
-from apps.libs.helper import modificacantidadmaterial
+from apps.libs.helper import modificacantidadmaterial, restauracantidad
+
+
 
 
 def listadoorden(request):
@@ -126,6 +128,10 @@ def editarorden(request, pk):
 @csrf_exempt
 def ajaxgrabareditarorden(request,pk):
     detalleorden=DetalleOrden.objects.filter(orden=pk)
+
+    for d in detalleorden:
+        restauracantidad(d.material.pk, d.cantidad)
+    
     detalleorden.delete()
 
     fecha = request.POST["fecha"]
@@ -134,11 +140,8 @@ def ajaxgrabareditarorden(request,pk):
     obra = Obra.objects.get(pk=int(request.POST["obra"]))
 
     arraymaterial = request.POST.getlist('arraymaterial[]')
-    arrayunidad = request.POST.getlist('arrayunidad[]')
+    #arrayunidad = request.POST.getlist('arrayunidad[]')
     arraycantidad = request.POST.getlist('arraycantidad[]')
-    
-    print("***********************************")
-    print(arrayunidad)
 
     orden = Orden.objects.get(pk=pk)
 
@@ -151,16 +154,17 @@ def ajaxgrabareditarorden(request,pk):
 
     orden = Orden.objects.get(pk=pk)
 
-    for (material, unidad, cantidad) in zip(arraymaterial, arrayunidad, arraycantidad):
+    for (material, cantidad) in zip(arraymaterial, arraycantidad):
         material = Material.objects.get(pk=int(material))
-        unidad = Unidad.objects.get(pk=int(unidad))
+        #unidad = Unidad.objects.get(materialpk=int(unidad))
 
         detalleorden = DetalleOrden(
             orden=orden,
             material=material,
             cantidad=cantidad,
         )
-        print(detalleorden)
+        
+        modificacantidadmaterial(material.pk, cantidad)
 
         detalleorden.save()
 

@@ -20,3 +20,10 @@ def validacantidad(material_id, cantidad):
         return 1
     else:
         return 0
+
+
+def restauracantidad(material_id, cantidadingresada):
+    material = Material.objects.get(pk=material_id)
+    material.cantidad = float(material.cantidad) + float(cantidadingresada)
+    material.save()
+    return material.pk

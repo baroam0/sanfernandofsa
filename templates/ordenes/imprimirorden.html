@@ -32,17 +32,18 @@
 
 			<table style="width:100%">
 				<tr>
+					Fecha:<b> {{orden.fecha}} </b>
+				</tr>
+				<br>
+				<tr>
 					Destino:<b> {{orden.obra.descripcion.upper}} </b>
 				</tr>
 				<br>
 				<tr>
-					Contratista:<b> {{orden.contratista.descripcion.upper}} </b>
+					Capataz:<b> {{orden.capataz.apellido.upper}}, {{orden.capataz.nombre.upper}} </b>
 				</tr>
-
 				<br>
-				<tr>
-					Encargado:<b> {{orden.encargado.upper}} </b>
-				</tr>
+
 			</table>
 
 
@@ -50,15 +51,15 @@
 			<table style="width:100%">
 				<thead>
 					<th>Material</th>
-					<th>Cantidad</th>
 					<th>Unidad</th>
+					<th>Cantidad</th>
 				</thead>
 
 				{% for detalleorden in detallesorden%}
 					<tr>
 						<td>{{detalleorden.material.descripcion.upper}}</td>
+						<td>{{detalleorden.material.unidad}}</td>
 						<td>{{detalleorden.cantidad}}</td>
-						<td>{{detalleorden.unidad.descripcion.upper}}  </td>
 					</tr>
 				{%endfor%}
 

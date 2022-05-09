@@ -7,9 +7,8 @@
         <div class="pure-u-1-5"></div>
         <div class="pure-u-3-5">
             <h3>
-                Reporte de Materiales por Cooperativa
+                Reporte de Materiales por Capataz
             </h3>
-
 
             {% if messages %}
                 {% for message in messages %}
@@ -21,13 +20,14 @@
                 {% endfor  %}
             {% endif %}
 
+
             
             <form class="pure-form">
                 <fieldset>
-                    <select id="selectContratista">
-                        {% for contratista in contratistas %}
-                            <option value={{contratista.pk}}>
-                                {{contratista.descripcion.upper}}
+                    <select id="selectCapataz">
+                        {% for capataz in capataces %}
+                            <option value={{capataz.pk}}>
+                                {{capataz.apellido.upper}}, {{capataz.nombre.upper}}
                             </option>
                         {% endfor%}
                     </select>
@@ -63,8 +63,8 @@
 
         function GenerarReporte() {
 
-            var idcontratista = $("#selectContratista").val();
-            window.open('/reportematerialporcooperativa/' + idcontratista, '_blank');
+            var idcapataz = $("#selectCapataz").val();
+            window.open('/reportes/reportematerialporcapataz/' + idcapataz, '_blank');
         }
 
     </script>

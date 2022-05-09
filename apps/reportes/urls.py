@@ -16,16 +16,11 @@ Including another URLconf
 
 from django.urls import path
 
-from .views import (
-    listadoorden, nuevaorden, editarorden, ajaxgrabarorden,
-    ajaxgrabareditarorden,imprimirorden
-) 
+from .views import listadomaterialporcapataz, listadomaterialporobra, reportematerialporcapataz, reportematerialporobra
 
 urlpatterns = [
-    path('listado/', listadoorden, name='listado-orden'),
-    path('nuevo/', nuevaorden, name='nueva-orden'),
-    path('editar/<int:pk>', editarorden, name='editar-orden'),
-    path('ajax/nuevo/', ajaxgrabarorden,  name='ajax-nueva-orden'),
-    path('ajax/editar/<int:pk>', ajaxgrabareditarorden ,  name='ajax-ediar-orden'),
-    path('imprimir/<int:pk>', imprimirorden ,  name='imprimir'),
+    path('listadoporcapataz/', listadomaterialporcapataz, name='listado-capataz'),
+    path('listadoporobra/', listadomaterialporobra, name='listado-obra'),
+    path('reportematerialporcapataz/<int:pk>', reportematerialporcapataz, name='reportematerial-capataz'),
+    path('reportematerialporobra/<int:pk>', reportematerialporobra, name='reportematerial-obra'),
 ]

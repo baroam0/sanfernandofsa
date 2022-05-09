@@ -44,15 +44,15 @@
 			<table style="width:100%">
 				<thead>
 					<th>Material</th>
-					<th>Cantidad</th>
 					<th>Unidad</th>
+					<th>Cantidad</th>
 				</thead>
 
 				{% for detalleorden in detallesordenes%}
 					<tr>
-						<td>{{detalleorden.material__descripcion}}</td>
+						<td>{{detalleorden.material__descripcion.upper}}</td>
+						<td>{{detalleorden.material__unidad__descripcion.upper}}  </td>
 						<td>{{detalleorden.cant}}</td>
-						<td>{{detalleorden.unidad__descripcion.upper}}  </td>
 					</tr>
 				{%endfor%}
 

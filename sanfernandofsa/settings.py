@@ -57,11 +57,7 @@ ROOT_URLCONF = 'sanfernandofsa.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-<<<<<<< HEAD
-        'DIRS': ['templates'],
-=======
         'DIRS': ['sanfernandofsa/templates'],
->>>>>>> 011c1136b6cac864ccb0deff78b40c50555b83bf
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
